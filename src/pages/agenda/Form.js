@@ -84,18 +84,6 @@ export default class Form extends Component {
         }
     };
 
-    professoresLista = async () => {
-        let lista = [];
-        this.state.professores.forEach(item => {
-            item.key = item.id;
-            item.label = item.id;
-            item.value = item.id;
-            lista.push(item)
-        });
-        this.setState({professores: lista});
-        console.tron.log('teste', this.state.professores)
-    };
-
     cadastrar = async () => {
         if (!this.state.professorId || !this.state.diaSemana || !this.state.alunoId || !this.state.hora) return;
         this.setState({loading: true});
