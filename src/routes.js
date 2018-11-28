@@ -2,17 +2,23 @@ import React from 'react';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import Login from './pages/Login';
 import Menu from './pages/Menu';
-import Professor from './pages/professor/Professor';
-import Aluno from './pages/aluno/Aluno';
-import Agenda from './pages/agenda/Agenda';
+import Professor from './pages/professor/Lista';
+import Aluno from './pages/aluno/Lista';
+import Agenda from './pages/agenda/Lista';
 import {cores} from './styles';
-import Sair from './components/sair'
-import MenuIcon from './components/menuIcon'
-import Titulo from './components/titulo'
+import Sair from './components/sair';
+import MenuIcon from './components/menuIcon';
+import Titulo from './components/titulo';
+import NovoProfessor from './pages/professor/Form';
+import NovoAluno from './pages/aluno/Form'
+import NovoAgenda from './pages/agenda/Form'
 
 const Routes = StackNavigator({
     Login: {screen: Login},
     Menu: {screen: Menu},
+    NovoProfessor: {screen: NovoProfessor},
+    NovoAluno: {screen: NovoAluno},
+    NovoAgenda: {screen: NovoAgenda},
     Logado: {
         screen: TabNavigator({
             Agenda: {screen: Agenda},

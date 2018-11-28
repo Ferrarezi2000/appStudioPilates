@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Icon} from 'native-base';
-export default class Agenda extends Component {
+export default class Lista extends Component {
     static navigationOptions = {
         tabBarIcon: ({tintColor}) => <Icon name="calendar" type="FontAwesome" style={{fontSize: 20, color: tintColor}}/>
     };

@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Icon} from 'native-base';
 
-export default class Aluno extends Component {
+export default class Lista extends Component {
     static navigationOptions = {
-        tabBarIcon: ({tintColor}) => <Icon name="md-people" type="Ionicons" style={{fontSize: 30, color: tintColor}}/>
+        tabBarIcon: ({tintColor}) => <Icon name="teach" type="MaterialCommunityIcons" style={{fontSize: 27, color: tintColor}}/>
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>Aluno</Text>
+                <Text style={styles.welcome}>Professor</Text>
             </View>
         );
     }
@@ -27,10 +27,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
     },
 });

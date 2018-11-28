@@ -39,34 +39,25 @@ export default class Login extends Component {
         }
     };
 
-    checkAdm = async () => {
-        const adm = await api.post('login', this.state.adm);
-        return adm;
-    };
-
-    salvarAdm = async () => {
-        await AsyncStorage.setItem('email', this.state.adm.email);
-        await AsyncStorage.setItem('senha', this.state.adm.senha)
-    };
-
     logar = async () => {
         if (this.state.adm.email.length === 0 || this.state.adm.senha.length === 0) return;
         this.setState({loading: true});
-
-        try {
-           await this.checkAdm();
-           await this.salvarAdm();
-
+        await api.post('login', this.state.adm).then(res => {
+            this.salvarAdm();
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [NavigationActions.navigate({routeName: 'Logado'})]
             });
             this.props.navigation.dispatch(resetAction);
-        } catch (erro) {
+        }).catch(erro => {
             this.setState({loading: false, msgErro: erro.response.data});
             this.setState({loadingInicial: false});
-        }
+        });
+    };
 
+    salvarAdm = async () => {
+        await AsyncStorage.setItem('email', this.state.adm.email);
+        await AsyncStorage.setItem('senha', this.state.adm.senha)
     };
 
     render() {

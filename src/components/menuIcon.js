@@ -3,7 +3,6 @@ import {StyleSheet, AsyncStorage, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 import {cores} from '../styles';
 import {Icon} from 'native-base';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class MenuIcon extends Component {
     static propTypes = {
@@ -27,12 +26,12 @@ export default class MenuIcon extends Component {
     render() {
         return (
             <View>
-                {this.props.navigation.state.routeName === 'Logado'
-                    ? <TouchableOpacity onPress={this.menu}>
-                        <Icon name="menu" style={styles.icon}/>
-                    </TouchableOpacity>
-                    : <TouchableOpacity onPress={this.voltar}>
+                {this.props.navigation.state.routeName !== 'Logado'
+                    ? <TouchableOpacity onPress={this.voltar}>
                         <Icon type="FontAwesome" name="angle-left" style={styles.icon}/>
+                    </TouchableOpacity>
+                    : <TouchableOpacity onPress={this.menu}>
+                        <Icon name="menu" style={styles.icon}/>
                     </TouchableOpacity>}
             </View>
         );

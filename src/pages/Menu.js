@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import { Content, Card, CardItem, Text, Icon, Right } from 'native-base';
-import {cores, metricas} from '../styles';
+import {cores} from '../styles';
 import PropTypes from 'prop-types';
+import {NavigationActions} from "react-navigation";
 
 export default class Menu extends Component {
     static propTypes = {
@@ -18,7 +19,11 @@ export default class Menu extends Component {
         adm: {
             email: 'ferrarezi_alem@yahoo.com.br',
             senha: '102030'
-        }
+        },
+    };
+
+    navegar = (rota) => {
+        this.props.navigation.navigate(rota);
     };
 
     render() {
@@ -26,33 +31,39 @@ export default class Menu extends Component {
             <View style={styles.container}>
                 <Content>
                     <Card>
-                        <CardItem>
-                            <Icon active name="md-person-add" />
-                            <Text style={styles.texto}>Novo Aluno</Text>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </CardItem>
+                        <TouchableOpacity onPress={() => this.navegar('NovoAluno')}>
+                            <CardItem style={styles.card}>
+                                <Icon active name="md-person-add"  style={{color: cores.white}}/>
+                                <Text style={styles.texto}>Novo Aluno</Text>
+                                <Right>
+                                    <Icon name="arrow-forward" />
+                                </Right>
+                            </CardItem>
+                        </TouchableOpacity>
                     </Card>
 
                     <Card>
-                        <CardItem>
-                            <Icon active name="teach" type="MaterialCommunityIcons" style={{fontSize: 30}}/>
-                            <Text style={styles.texto}>Nova Professora</Text>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </CardItem>
+                        <TouchableOpacity onPress={() => this.navegar('NovoProfessor')}>
+                            <CardItem style={styles.card}>
+                                <Icon active name="teach" type="MaterialCommunityIcons" style={{fontSize: 30, color: cores.white}}/>
+                                <Text style={styles.texto}>Nova Professora</Text>
+                                <Right>
+                                    <Icon name="arrow-forward" />
+                                </Right>
+                            </CardItem>
+                        </TouchableOpacity>
                     </Card>
 
                     <Card>
-                        <CardItem>
-                            <Icon active name="calendar" type="FontAwesome" />
-                            <Text style={styles.texto}>Novo Horário</Text>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </CardItem>
+                        <TouchableOpacity onPress={() => this.navegar('NovoAgenda')}>
+                            <CardItem style={styles.card}>
+                                <Icon active name="calendar" type="FontAwesome" style={{color: cores.white}}/>
+                                <Text style={styles.texto}>Novo Horário</Text>
+                                <Right>
+                                    <Icon name="arrow-forward" />
+                                </Right>
+                            </CardItem>
+                        </TouchableOpacity>
                     </Card>
                 </Content>
             </View>
@@ -66,41 +77,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         backgroundColor: cores.secundaria,
-        padding: metricas.basePadding * 2,
+        padding: 2,
     },
-    titulo: {
-        fontSize: 24,
-        textAlign: 'center',
-        color: cores.white,
-        fontWeight: 'bold',
-    },
-    form: {
-        marginTop: metricas.baseMargin * 2
-    },
-    input: {
-        backgroundColor: cores.white,
-        borderRadius: metricas.baseRadius,
-        height: 44,
-        paddingHorizontal: metricas.basePadding,
-        marginBottom: 8,
-    },
-    botao: {
-        backgroundColor: cores.primaria,
-        borderRadius: metricas.baseRadius,
-        height: 44,
-        marginTop: metricas.baseMargin,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    logar: {
-        color: cores.white,
-        fontWeight: 'bold',
-        fontSize: 15,
+    card: {
+        backgroundColor: cores.secundaria
     },
     texto: {
-        marginLeft: metricas.baseMargin,
+        color: cores.white
     },
-    icones: {
-        textAlign: 'right',
-    }
 });
