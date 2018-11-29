@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import {ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, Picker} from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, Picker, ScrollView} from 'react-native';
+import RadioForm from 'react-native-simple-radio-button';
 import Select from 'react-native-picker-select';
 import {cores, metricas} from '../../styles'
 import api from "../../services/api";
@@ -45,7 +46,15 @@ export default class Form extends Component {
     };
 
     state = {
+        qdtVezes: [
+            {label: '1 x Semana', value: 1 },
+            {label: '2 x Semana', value: 2 },
+            {label: '3 x Semana', value: 3 },
+            {label: '4 x Semana', value: 4 },
+        ],
         professores: [],
+        contador: 1,
+        qtdSelecionada: 1,
         alunos: [],
         listaHora: [
             {label: "07:00 - 08:00", value: "07:00 - 08:00", key: 1},
@@ -73,15 +82,29 @@ export default class Form extends Component {
         msgErro: null,
         msgSucesso: null,
         professorId: null,
-        diaSemana: null,
-        hora: null,
         alunoId: null,
         agenda: {
             aluno_id: null,
             professor_id: null,
             hora: null,
             dia_semana: null
-        }
+        },
+        primeiro: {
+            hora: null,
+            dia_semana: null
+        },
+        segundo: {
+            hora: null,
+            dia_semana: null
+        },
+        terceiro: {
+            hora: null,
+            dia_semana: null
+        },
+        quarto: {
+            hora: null,
+            dia_semana: null
+        },
     };
 
     cadastrar = async () => {
@@ -98,6 +121,11 @@ export default class Form extends Component {
         });
     };
 
+    proximo = () => {
+        if (!this.state.professorId || !this.state.alunoId) return;
+        this.setState({contador: 2});
+    };
+
     render() {
         let professores = this.state.professores.map((p, i) => {
             return <Picker.Item key={i} value={p.id} label={p.nome} />
@@ -110,51 +138,209 @@ export default class Form extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.form}>
-                    <Text style={styles.titulo}>Agenda</Text>
-                    <Text style={styles.texto}>Cadastre um novo horário</Text>
+                    {this.state.contador === 1
+                         ?  <ScrollView>
+                                <View>
+                                <Text style={styles.titulo}>Agenda</Text>
+                                <Text style={styles.texto}>Cadastre um novo horário</Text>
 
-                    <Text style={styles.label}>Professora</Text>
-                    <Select
-                        style={{...pickerSelectStyles}}
-                        selectedValue={this.state.professorId}
-                        items={this.state.professores}
-                        placeholder={{label: 'Selecione uma professora', value: null}}
-                        onValueChange={(prof) => (this.setState({professorId: prof}))}/>
+                                <Text style={styles.label}>Professora</Text>
+                                <Select
+                                    style={{...pickerSelectStyles}}
+                                    selectedValue={this.state.professorId}
+                                    items={this.state.professores}
+                                    placeholder={{label: 'Selecione uma professora', value: null}}
+                                    onValueChange={(prof) => (this.setState({professorId: prof}))}/>
 
-                    <Text style={styles.label}>Aluno</Text>
-                    <Select
-                        style={{...pickerSelectStyles}}
-                        selectedValue={this.state.alunoId}
-                        items={this.state.alunos}
-                        placeholder={{label: 'Selecione um aluno', value: null}}
-                        onValueChange={(aluno) => (this.setState({alunoId: aluno}))}/>
+                                <Text style={styles.label}>Aluno</Text>
+                                <Select
+                                    style={{...pickerSelectStyles}}
+                                    selectedValue={this.state.alunoId}
+                                    items={this.state.alunos}
+                                    placeholder={{label: 'Selecione um aluno', value: null}}
+                                    onValueChange={(aluno) => (this.setState({alunoId: aluno}))}/>
+
+                                <Text style={styles.label}>Semana</Text>
+                                <RadioForm
+                                    style={styles.viewCheck}
+                                    radio_props={this.state.qdtVezes}
+                                    initial={0}
+                                    formHorizontal={true}
+                                    labelHorizontal={false}
+                                    buttonColor={cores.white}
+                                    buttonInnerColor={cores.white}
+                                    labelStyle={{fontSize: 13, color: cores.white}}
+                                    animation={true}
+                                    onPress={(value) => {
+                                        this.setState({qtdSelecionada: value})
+                                    }}/>
+
+                                <Text style={styles.label}>Dia</Text>
+                                <Select
+                                    style={{...pickerSelectStyles}}
+                                    selectedValue={this.state.primeiro.dia_semana}
+                                    items={this.state.listaDia}
+                                    placeholder={{label: 'Selecione um dia', value: null}}
+                                    onValueChange={(dia) => (this.setState({
+                                        primeiro: {
+                                            dia_semana: dia,
+                                            hora: this.state.primeiro.hora
+                                        }
+                                    }))}/>
+
+                                <Text style={styles.label}>Hora</Text>
+                                <Select
+                                    style={{...pickerSelectStyles}}
+                                    selectedValue={this.state.primeiro.hora}
+                                    items={this.state.listaHora}
+                                    placeholder={{label: 'Selecione uma hora', value: null}}
+                                    onValueChange={(hora) => (this.setState({
+                                        primeiro: {
+                                            hora: hora,
+                                            dia_semana: this.state.primeiro.dia_semana
+                                        }
+                                    }))}/>
+
+                                {this.state.qtdSelecionada === 1 ?
+                                    <TouchableOpacity style={styles.cadastrar} onPress={this.cadastrar}>
+                                        {this.state.loading
+                                            ? <ActivityIndicator size="small" color="#FFF"/>
+                                            : <Text style={styles.logar}>Cadastrar</Text>}
+                                    </TouchableOpacity> :
+                                    <TouchableOpacity style={styles.botao} onPress={this.proximo}>
+                                        <Text style={styles.logar}>Próximo</Text>
+                                    </TouchableOpacity>
+                                }
+                            </View>
+                            </ScrollView>
+                        :   <ScrollView>
+                                <View>
+                            <Text style={styles.titulo}>Agenda</Text>
+                            <Text style={styles.texto}>Defina os dias e horários desejados.</Text>
 
 
-                    <Text style={styles.label}>Dia</Text>
-                    <Select
-                        style={{...pickerSelectStyles}}
-                        selectedValue={this.state.diaSemana}
-                        items={this.state.listaDia}
-                        placeholder={{label: 'Selecione um dia', value: null}}
-                        onValueChange={(dia) => (this.setState({diaSemana: dia}))}/>
+                            <Text style={styles.label}>Dia 1</Text>
+                            <Select
+                                style={{...pickerSelectStyles}}
+                                selectedValue={this.state.primeiro.dia_semana}
+                                items={this.state.listaDia}
+                                placeholder={{label: 'Selecione um dia', value: null}}
+                                onValueChange={(dia) => (this.setState({
+                                    primeiro: {
+                                        dia_semana: dia,
+                                        hora: this.state.primeiro.hora
+                                    }
+                                }))}/>
 
-                    <Text style={styles.label}>Hora</Text>
-                    <Select
-                        style={{...pickerSelectStyles}}
-                        selectedValue={this.state.hora}
-                        items={this.state.listaHora}
-                        placeholder={{label: 'Selecione uma hora', value: null}}
-                        onValueChange={(hora) => (this.setState({hora: hora}))}/>
+                            <Text style={styles.label}>Hora</Text>
+                            <Select
+                                style={{...pickerSelectStyles}}
+                                selectedValue={this.state.primeiro.hora}
+                                items={this.state.listaHora}
+                                placeholder={{label: 'Selecione uma hora', value: null}}
+                                onValueChange={(hora) => (this.setState({
+                                    primeiro: {
+                                        hora: hora,
+                                        dia_semana: this.state.primeiro.dia_semana
+                                    }
+                                }))}/>
 
-                    {!!this.state.msgErro && <Text style={styles.erro}>{this.state.msgErro}</Text>}
+                            <Text style={styles.label}>Dia 2</Text>
+                            <Select
+                                style={{...pickerSelectStyles}}
+                                selectedValue={this.state.segundo.dia_semana}
+                                items={this.state.listaDia}
+                                placeholder={{label: 'Selecione um dia', value: null}}
+                                onValueChange={(dia) => (this.setState({
+                                    segundo: {
+                                        dia_semana: dia,
+                                        hora: this.state.segundo.hora
+                                    }
+                                }))}/>
 
-                    {!!this.state.msgSucesso && <Text style={styles.sucesso}>{this.state.msgSucesso}</Text>}
+                            <Text style={styles.label}>Hora</Text>
+                            <Select
+                                style={{...pickerSelectStyles}}
+                                selectedValue={this.state.segundo.hora}
+                                items={this.state.listaHora}
+                                placeholder={{label: 'Selecione uma hora', value: null}}
+                                onValueChange={(hora) => (this.setState({
+                                    segundo: {
+                                        hora: hora,
+                                        dia_semana: this.state.segundo.dia_semana
+                                    }
+                                }))}/>
 
-                    <TouchableOpacity style={styles.botao} onPress={this.cadastrar}>
-                        {this.state.loading
-                            ? <ActivityIndicator size="small" color="#FFF"/>
-                            : <Text style={styles.logar}>Cadastrar</Text>}
-                    </TouchableOpacity>
+                            {this.state.qtdSelecionada >= 3
+                                ? <View>
+                                    <Text style={styles.label}>Dia 3</Text>
+                                    <Select
+                                        style={{...pickerSelectStyles}}
+                                        selectedValue={this.state.terceiro.dia_semana}
+                                        items={this.state.listaDia}
+                                        placeholder={{label: 'Selecione um dia', value: null}}
+                                        onValueChange={(dia) => (this.setState({
+                                            terceiro: {
+                                                dia_semana: dia,
+                                                hora: this.state.terceiro.hora
+                                            }
+                                        }))}/>
+
+                                    <Text style={styles.label}>Hora</Text>
+                                    <Select
+                                        style={{...pickerSelectStyles}}
+                                        selectedValue={this.state.terceiro.hora}
+                                        items={this.state.listaHora}
+                                        placeholder={{label: 'Selecione uma hora', value: null}}
+                                        onValueChange={(hora) => (this.setState({
+                                            terceiro: {
+                                                hora: hora,
+                                                dia_semana: this.state.terceiro.dia_semana
+                                            }
+                                        }))}/>
+                                </View>
+                                : <View/>
+                            }
+
+                            {this.state.qtdSelecionada >= 4
+                                ? <View>
+                                    <Text style={styles.label}>Dia 4</Text>
+                                    <Select
+                                        style={{...pickerSelectStyles}}
+                                        selectedValue={this.state.quarto.dia_semana}
+                                        items={this.state.listaDia}
+                                        placeholder={{label: 'Selecione um dia', value: null}}
+                                        onValueChange={(dia) => (this.setState({
+                                            quarto: {
+                                                dia_semana: dia,
+                                                hora: this.state.quarto.hora
+                                            }
+                                        }))}/>
+
+                                    <Text style={styles.label}>Hora</Text>
+                                    <Select
+                                        style={{...pickerSelectStyles}}
+                                        selectedValue={this.state.quarto.hora}
+                                        items={this.state.listaHora}
+                                        placeholder={{label: 'Selecione uma hora', value: null}}
+                                        onValueChange={(hora) => (this.setState({
+                                            quarto: {
+                                                hora: hora,
+                                                dia_semana: this.state.quarto.dia_semana
+                                            }
+                                        }))}/>
+                                </View>
+                                : <View/>
+                            }
+
+                            <TouchableOpacity style={styles.cadastrar} onPress={this.cadastrar}>
+                                {this.state.loading
+                                    ? <ActivityIndicator size="small" color="#FFF"/>
+                                    : <Text style={styles.logar}>Cadastrar</Text>}
+                            </TouchableOpacity>
+                        </View>
+                            </ScrollView>
+                    }
                 </View>
             </View>
         )
@@ -164,7 +350,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: cores.secundaria,
-        padding: metricas.basePadding * 2,
+        paddingLeft: metricas.basePadding,
+        paddingRight: metricas.basePadding,
+    },
+    viewCheck: {
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        color: cores.white,
+        padding: 5,
     },
     input: {
         backgroundColor: cores.white,
@@ -172,6 +365,10 @@ const styles = StyleSheet.create({
         height: 44,
         paddingHorizontal: metricas.basePadding,
         marginBottom: 8,
+    },
+    textRadio: {
+        color: cores.white,
+        marginLeft: 5
     },
     inputText: {
         backgroundColor: cores.white,
@@ -216,6 +413,16 @@ const styles = StyleSheet.create({
         borderRadius: metricas.baseRadius,
         height: 44,
         marginTop: metricas.baseMargin,
+        marginBottom: metricas.baseMargin,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    cadastrar: {
+        backgroundColor: cores.sucesso,
+        borderRadius: metricas.baseRadius,
+        height: 44,
+        marginTop: metricas.baseMargin,
+        marginBottom: metricas.baseMargin,
         justifyContent: 'center',
         alignItems: 'center'
     },
