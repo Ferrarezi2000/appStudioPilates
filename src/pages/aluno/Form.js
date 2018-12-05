@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {Textarea} from 'native-base';
 import { TextInputMask } from 'react-native-masked-text'
 import cores from "../../styles/cores";
 import metricas from "../../styles/metricas";

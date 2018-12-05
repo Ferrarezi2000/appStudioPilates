@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, FlatList, ScrollView} from 'react-native';
 import {Icon} from 'native-base';
 import cores from "../../styles/cores";
-import metricas from "../../styles/metricas";
 import api from "../../services/api";
+import ListAluno from './components/Alunos';
 
 export default class Lista extends Component {
     static navigationOptions = {
@@ -11,6 +11,14 @@ export default class Lista extends Component {
     };
 
     async componentDidMount() {
+        await this.carregarAlunos()
+    };
+
+    state = {
+        alunos: [],
+    };
+
+    carregarAlunos = async () => {
         await api.get('alunos').then(res => {
             this.setState({alunos: res.data});
         }).catch(erro => {
@@ -18,15 +26,15 @@ export default class Lista extends Component {
         });
     };
 
-    state = {
-        alunos: [],
-    };
-
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Aluno</Text>
-            </View>
+            <ScrollView style={styles.container}>
+                <FlatList
+                    style={styles.list}
+                    renderItem={({ item }) => <ListAluno aluno={item} carregarLista={this.carregarAlunos}/>}
+                    data={this.state.alunos}
+                    keyExtractor={aluno => String(aluno.id)}/>
+            </ScrollView>
         );
     }
 }
@@ -35,17 +43,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: cores.secundaria,
-        paddingLeft: metricas.basePadding,
-        paddingRight: metricas.basePadding,
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    list: {
+        marginTop: 10,
+    }
 });
