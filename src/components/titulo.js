@@ -17,7 +17,7 @@ export default class Titulo extends Component {
         return (
             <View>
             {this.props.navigation.state.routeName === 'Logado'
-                ? <Text style={styles.titulo}>Título</Text>
+                ? <Text style={styles.titulo}>Studio Fisio Pilates</Text>
                 : <Text style={styles.titulo}>Menu</Text>}
             </View>
 

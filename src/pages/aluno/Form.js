@@ -90,10 +90,9 @@ export default class Form extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'stretch',
         backgroundColor: cores.secundaria,
-        padding: metricas.basePadding * 2,
+        paddingLeft: metricas.basePadding,
+        paddingRight: metricas.basePadding,
     },
     input: {
         backgroundColor: cores.white,
@@ -120,19 +119,19 @@ const styles = StyleSheet.create({
         color: cores.light,
         fontSize: 15,
         marginTop: metricas.baseMargin,
-        marginBottom: metricas.baseMargin,
+        marginBottom: metricas.baseMargin * 4,
         lineHeight: 21,
     },
     erro: {
         color: cores.perigo,
         textAlign: 'center',
-        marginTop: metricas.baseMargin,
+        marginTop: metricas.baseMargin * 2,
         marginBottom: metricas.baseMargin,
     },
     sucesso: {
         color: cores.sucesso,
         textAlign: 'center',
-        marginTop: metricas.baseMargin,
+        marginTop: metricas.baseMargin * 2,
         marginBottom: metricas.baseMargin,
     },
     botao: {

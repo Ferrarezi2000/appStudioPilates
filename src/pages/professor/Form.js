@@ -49,15 +49,15 @@ export default class Form extends Component {
                         value={this.state.professor.nome}
                         onChangeText={nome => this.setState({professor: {nome: nome}})}/>
 
-                    {!!this.state.msgErro && <Text style={styles.erro}>{this.state.msgErro}</Text>}
-
-                    {!!this.state.msgSucesso && <Text style={styles.sucesso}>{this.state.msgSucesso}</Text>}
-
                     <TouchableOpacity style={styles.botao} onPress={this.cadastrar}>
                         {this.state.loading
                             ? <ActivityIndicator size="small" color="#FFF"/>
                             : <Text style={styles.logar}>Cadastrar</Text>}
                     </TouchableOpacity>
+
+                    {!!this.state.msgErro && <Text style={styles.erro}>{this.state.msgErro}</Text>}
+
+                    {!!this.state.msgSucesso && <Text style={styles.sucesso}>{this.state.msgSucesso}</Text>}
                 </View>
             </View>
         )
@@ -66,10 +66,9 @@ export default class Form extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'stretch',
         backgroundColor: cores.secundaria,
-        padding: metricas.basePadding * 2,
+        paddingLeft: metricas.basePadding,
+        paddingRight: metricas.basePadding,
     },
     input: {
         backgroundColor: cores.white,
@@ -89,19 +88,19 @@ const styles = StyleSheet.create({
         color: cores.light,
         fontSize: 15,
         marginTop: metricas.baseMargin,
-        marginBottom: metricas.baseMargin,
+        marginBottom: metricas.baseMargin * 4,
         lineHeight: 21,
     },
     erro: {
         color: cores.perigo,
         textAlign: 'center',
-        marginTop: metricas.baseMargin,
+        marginTop: metricas.baseMargin * 2,
         marginBottom: metricas.baseMargin,
     },
     sucesso: {
         color: cores.sucesso,
         textAlign: 'center',
-        marginTop: metricas.baseMargin,
+        marginTop: metricas.baseMargin * 2,
         marginBottom: metricas.baseMargin,
     },
     botao: {

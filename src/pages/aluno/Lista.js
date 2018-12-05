@@ -1,10 +1,25 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Icon} from 'native-base';
+import cores from "../../styles/cores";
+import metricas from "../../styles/metricas";
+import api from "../../services/api";
 
 export default class Lista extends Component {
     static navigationOptions = {
         tabBarIcon: ({tintColor}) => <Icon name="md-people" type="Ionicons" style={{fontSize: 30, color: tintColor}}/>
+    };
+
+    async componentDidMount() {
+        await api.get('alunos').then(res => {
+            this.setState({alunos: res.data});
+        }).catch(erro => {
+            console.tron.log(erro)
+        });
+    };
+
+    state = {
+        alunos: [],
     };
 
     render() {
@@ -19,9 +34,9 @@ export default class Lista extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: cores.secundaria,
+        paddingLeft: metricas.basePadding,
+        paddingRight: metricas.basePadding,
     },
     welcome: {
         fontSize: 20,
