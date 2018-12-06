@@ -1,16 +1,44 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {AsyncStorage, StyleSheet, FlatList, ScrollView, StatusBar} from 'react-native';
 import {Icon} from 'native-base';
+import api from "../../services/api";
+import cores from "../../styles/cores";
+import Agendas from "./components/Agendas";
+
 export default class Lista extends Component {
     static navigationOptions = {
         tabBarIcon: ({tintColor}) => <Icon name="calendar" type="FontAwesome" style={{fontSize: 20, color: tintColor}}/>
     };
 
+    async componentDidMount() {
+        const nome = await AsyncStorage.getItem('nome');
+        await this.setState({professor: {nome: nome}});
+        await this.carregarAgenda();
+    };
+
+    state = {
+        professor: {nome: ''},
+        listaAgenda: ''
+    };
+
+    carregarAgenda = async () => {
+        await api.post('agenda/professor', this.state.professor).then(res => {
+            this.setState({listaAgenda: res.data});
+        }).catch(erro => {
+            console.tron.log(erro)
+        });
+    };
+
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Agenda</Text>
-            </View>
+            <ScrollView style={styles.container}>
+                <StatusBar barStyle="light-content" backgroundColor={cores.secundaria}/>
+                <FlatList
+                    style={styles.list}
+                    renderItem={({ item }) => <Agendas agenda={item} carregarLista={this.carregarAgenda}/>}
+                    data={this.state.listaAgenda}
+                    keyExtractor={agenda => String(agenda.id)}/>
+            </ScrollView>
         );
     }
 }
@@ -18,18 +46,9 @@ export default class Lista extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: cores.secundaria,
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    list: {
+        marginTop: 10,
+    }
 });

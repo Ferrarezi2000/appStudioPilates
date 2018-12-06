@@ -21,18 +21,16 @@ export default class Login extends Component {
         loading: false,
         msgErro: null,
         adm: {
-            email: 'ferrarezi_alem@yahoo.com.br',
             senha: '102030'
         }
     };
 
     async componentDidMount() {
         this.setState({loadingInicial: true});
-        const email = await AsyncStorage.getItem('email');
         const senha = await AsyncStorage.getItem('senha');
 
-        if (email !== null && senha !== null) {
-            this.setState({adm: {email: email, senha: senha}});
+        if (senha !== null) {
+            this.setState({adm: {senha: senha}});
             this.logar();
         } else {
             this.setState({loadingInicial: false});
@@ -40,10 +38,11 @@ export default class Login extends Component {
     };
 
     logar = async () => {
-        if (this.state.adm.email.length === 0 || this.state.adm.senha.length === 0) return;
+        if (this.state.adm.senha.length === 0) return;
         this.setState({loading: true});
         await api.post('login', this.state.adm).then(res => {
             this.salvarAdm();
+            this.salvarProf(res.data.nome);
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [NavigationActions.navigate({routeName: 'Logado'})]
@@ -56,8 +55,11 @@ export default class Login extends Component {
     };
 
     salvarAdm = async () => {
-        await AsyncStorage.setItem('email', this.state.adm.email);
         await AsyncStorage.setItem('senha', this.state.adm.senha)
+    };
+
+    salvarProf = async (nome) => {
+        await AsyncStorage.setItem('nome', nome)
     };
 
     render() {
@@ -69,18 +71,9 @@ export default class Login extends Component {
                 ? <ActivityIndicator color="#FFF" size="large"/>
                 : <View>
                         <Text style={styles.titulo}>Bem-vindo</Text>
-                        <Text style={styles.texto}>Informe seu email e senha.</Text>
+                        <Text style={styles.texto}>Informe sua senha de acesso.</Text>
 
                         <View style={styles.form}>
-                            <TextInput
-                                style={styles.input}
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                placeholder="Digite seu email"
-                                underlineColorAndroid="rgba(0, 0, 0, 0)"
-                                value={this.state.adm.email}
-                                onChangeText={email => this.setState({adm: {email: email, senha: this.state.adm.senha} })}/>
-
                             <TextInput
                                 style={styles.input}
                                 autoCapitalize="none"
@@ -88,7 +81,7 @@ export default class Login extends Component {
                                 placeholder="Digite sua senha"
                                 underlineColorAndroid="rgba(0, 0, 0, 0)"
                                 value={this.state.adm.senha}
-                                onChangeText={senha => this.setState({adm: {email: this.state.adm.email, senha: senha} })}/>
+                                onChangeText={senha => this.setState({adm: {senha: senha} })}/>
 
                             {!!this.state.msgErro && <Text style={styles.erro}>{this.state.msgErro}</Text>}
 

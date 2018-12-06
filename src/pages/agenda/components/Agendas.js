@@ -1,0 +1,65 @@
+import React, {Component} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {Icon} from 'native-base';
+import cores from "../../../styles/cores";
+import metricas from "../../../styles/metricas";
+import PropTypes from "prop-types";
+import Horarios from './Horarios';
+
+
+export default class Agendas extends Component {
+    static propTypes = {
+        carregarLista: PropTypes.func.isRequired,
+        agenda: PropTypes.shape({
+            dia: PropTypes.string,
+            aulas: PropTypes.arrayOf(PropTypes.shape({
+                hora: PropTypes.string
+            })),
+        }).isRequired
+    };
+
+    render() {
+        return (
+            <View>
+                {this.props.agenda.aulas.length > 0 &&
+                    <View style={styles.container}>
+                        <View style={styles.info}>
+                            <Text style={styles.dias}>{this.props.agenda.dia} - {this.props.agenda.aulas.length} Aula(s)</Text>
+                            <FlatList
+                                style={styles.list}
+                                renderItem={({item}) => <Horarios horario={item}/>}
+                                data={this.props.agenda.aulas}
+                                keyExtractor={aula => String(aula.id)}/>
+                        </View>
+                    </View>
+                }
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    form: {
+        borderColor: cores.white,
+        borderStyle: 'solid',
+    },
+    cancel: {
+        color: cores.perigo
+    },
+    info: {
+        flex: 1,
+        marginLeft: metricas.baseMargin * 2,
+    },
+    dias: {
+        fontSize: 15,
+        color: cores.white,
+    },
+    container: {
+        borderBottomWidth: 0.5,
+        borderColor: '#d6d7da',
+        marginTop: metricas.baseMargin,
+        marginHorizontal: metricas.baseMargin,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});

@@ -18,11 +18,12 @@ export default class Form extends Component {
         msgSucesso: null,
         professor: {
             nome: '',
+            senha: ''
         }
     };
 
     cadastrar = async () => {
-        if (this.state.professor.nome.length === 3) return;
+        if (this.state.professor.nome.length < 3 || this.state.professor.senha.length < 3) return;
         this.setState({loading: true});
         await api.post('professor', this.state.professor).then(res => {
             this.setState({msgSucesso: 'Professora cadastrada com sucesso.'});
@@ -47,7 +48,16 @@ export default class Form extends Component {
                         placeholder="Nome"
                         underlineColorAndroid="rgba(0, 0, 0, 0)"
                         value={this.state.professor.nome}
-                        onChangeText={nome => this.setState({professor: {nome: nome}})}/>
+                        onChangeText={nome => this.setState({professor: {nome: nome, senha: this.state.professor.senha}})}/>
+
+                    <TextInput
+                        style={styles.input}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        placeholder="Senha de Acesso"
+                        underlineColorAndroid="rgba(0, 0, 0, 0)"
+                        value={this.state.professor.senha}
+                        onChangeText={senha => this.setState({professor: {senha: senha, nome: this.state.professor.nome}})}/>
 
                     <TouchableOpacity style={styles.botao} onPress={this.cadastrar}>
                         {this.state.loading
