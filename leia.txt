@@ -1,0 +1,5 @@
+Para gerar o apk executar o comando
+-> gradlew assembleRelease
+dentro da pasta android.
+senha.
+->ferrarezi2000
