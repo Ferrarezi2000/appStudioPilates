@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, StyleSheet, FlatList, ScrollView, StatusBar} from 'react-native';
+import {StyleSheet, FlatList, ScrollView, StatusBar} from 'react-native';
 import {Icon} from 'native-base';
 import api from "../../services/api";
 import cores from "../../styles/cores";
@@ -11,19 +11,17 @@ export default class Lista extends Component {
     };
 
     async componentDidMount() {
-        const nome = await AsyncStorage.getItem('nome');
-        await this.setState({professor: {nome: nome}});
-        await this.carregarAgenda();
+        await this.carregarAgendaLivre();
     };
 
     state = {
         professor: {nome: ''},
-        listaAgenda: ''
+        listaAgendaLivre: ''
     };
 
-    carregarAgenda = async () => {
-        await api.post('agenda/professor', this.state.professor).then(res => {
-            this.setState({listaAgenda: res.data});
+    carregarAgendaLivre = async () => {
+        await api.get('agenda/livre').then(res => {
+            this.setState({listaAgendaLivre: res.data});
         }).catch(erro => {
             console.tron.log(erro)
         });
@@ -35,8 +33,8 @@ export default class Lista extends Component {
                 <StatusBar barStyle="light-content" backgroundColor={cores.secundaria}/>
                 <FlatList
                     style={styles.list}
-                    renderItem={({ item }) => <Agendas agenda={item} carregarAgenda={this.carregarAgenda}/>}
-                    data={this.state.listaAgenda}
+                    renderItem={({ item }) => <Agendas agenda={item} carregarLista={this.carregarAgendaLivre}/>}
+                    data={this.state.listaAgendaLivre}
                     keyExtractor={agenda => String(agenda.id)}/>
             </ScrollView>
         );

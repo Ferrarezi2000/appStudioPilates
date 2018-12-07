@@ -7,8 +7,10 @@ export default {
     darker: '#333',
     black: '#000',
 
-    primaria: '#7A91CA',
-    secundaria: '#444A5A',
+    // primaria: '#7A91CA',
+    primaria: '#121212',
+    // secundaria: '#444A5A',
+    secundaria: '#282828',
     sucesso: '#9DCA83',
     perigo: '#E37A7A',
 

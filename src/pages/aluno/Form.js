@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         marginBottom: metricas.baseMargin,
     },
     botao: {
-        backgroundColor: cores.primaria,
+        backgroundColor: cores.sucesso,
         borderRadius: metricas.baseRadius,
         height: 44,
         marginTop: metricas.baseMargin,

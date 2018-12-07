@@ -5,6 +5,7 @@ import Menu from './pages/Menu';
 import Professor from './pages/professor/Lista';
 import Aluno from './pages/aluno/Lista';
 import Agenda from './pages/agenda/Lista';
+import AgendaLivre from './pages/agendaLivre/Lista';
 import {cores} from './styles';
 import Sair from './components/sair';
 import MenuIcon from './components/menuIcon';
@@ -24,6 +25,7 @@ const Routes = StackNavigator({
             Agenda: {screen: Agenda},
             Alunos: {screen: Aluno},
             Professoras: {screen: Professor},
+            Livre: {screen: AgendaLivre},
         }, {
             tabBarPosition: 'bottom',
             tabBarOptions: {

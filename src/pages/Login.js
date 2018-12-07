@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'stretch',
-        backgroundColor: cores.secundaria,
+        backgroundColor: cores.primaria,
         padding: metricas.basePadding * 2,
     },
     titulo: {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     botao: {
-        backgroundColor: cores.primaria,
+        backgroundColor: cores.secundaria,
         borderRadius: metricas.baseRadius,
         height: 44,
         marginTop: metricas.baseMargin,

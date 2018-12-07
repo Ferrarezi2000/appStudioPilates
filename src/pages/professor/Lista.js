@@ -42,7 +42,7 @@ export default class Lista extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: cores.secundaria,
+        backgroundColor: cores.primaria,
     },
     list: {
         marginTop: 10,
