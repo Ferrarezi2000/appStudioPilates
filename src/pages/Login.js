@@ -21,7 +21,7 @@ export default class Login extends Component {
         loading: false,
         msgErro: null,
         adm: {
-            senha: '102030'
+            senha: ''
         }
     };
 
